@@ -8,7 +8,6 @@ const Signup = () => {
 
   const [addUser, { error }] = useMutation(ADD_USER);
 
-  // update state based on form input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -18,13 +17,10 @@ const Signup = () => {
     });
   };
 
-  // submit form using async
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // use try/catch instead of promises to handle errors
     try {
-      // execute addUser mutation and pass in variable data from form
       const { data } = await addUser({
         variables: { ...formState }
       });

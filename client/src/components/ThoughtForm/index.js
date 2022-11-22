@@ -7,15 +7,12 @@ const ThoughtForm = () => {
     const [thoughtText, setText] = useState('');
     const [characterCount, setCharacterCount] = useState(0);
 
-    // add the new thought to existing thoughts array
     const [addThought, { error }] = useMutation(ADD_THOUGHT, {
         update(cache, { data: { addThought } }) {
             try {
 
-                // read whats currently in the cache
                 const { thoughts } = cache.readQuery({ query: QUERY_THOUGHTS });
 
-                // PREPEND the newest thought to the front of the array
                 cache.writeQuery({
                     query: QUERY_THOUGHTS,
                     data: { thoughts: [addThought, ...thoughts] }
@@ -24,7 +21,6 @@ const ThoughtForm = () => {
                 console.error(e);
             }
 
-            // update the object's cache, appending new thought to the end of the array
             const { me } = cache.readQuery({ query: QUERY_ME });
             cache.writeQuery({
                 query: QUERY_ME,
@@ -44,12 +40,10 @@ const ThoughtForm = () => {
         event.preventDefault();
 
         try {
-            // add thought to database
             await addThought({
                 variables: { thoughtText }
             });
 
-            // clear the form value
             setText('');
             setCharacterCount(0);
         } catch (e) {
